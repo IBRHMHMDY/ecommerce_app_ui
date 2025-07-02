@@ -27,8 +27,9 @@ class _AppScreenState extends State<AppScreen> {
     return Scaffold(
       appBar: TopNavBar(
         title: Image.asset('assets/logo.png', height: 32, width: 32),
-        isTitle: false,
-        actions: [CartButton()],),
+        centerTitle: false,
+        actions: [CartButton()],
+      ),
       backgroundColor: Colors.white,
       bottomNavigationBar: BottomNavBar(
         onItemTapped: (index) {
