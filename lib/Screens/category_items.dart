@@ -21,7 +21,7 @@ class CategoryItems extends StatefulWidget {
 
 class _CategoryItemsState extends State<CategoryItems> {
   List<Product> filterResults = [];
-  TextEditingController controller = TextEditingController();
+  final TextEditingController _controller = TextEditingController();
   @override
   void initState() {
     filterResults = widget.categoryItems;
@@ -60,13 +60,19 @@ class _CategoryItemsState extends State<CategoryItems> {
                     child: SizedBox(
                       height: 45,
                       child: TextField(
+                        controller: _controller,
                         onChanged: _filterList,
                         decoration: InputDecoration(
                           hintText: "${widget.category}'s Fashions",
                           hintStyle: TextStyle(height: 2.5),
                           prefixIcon: Icon(CupertinoIcons.search),
                           suffixIcon: GestureDetector(
-                            onTap: () => controller.clear(),
+                            onTap: () {
+                              setState(() {
+                                _controller.clear();
+                                _filterList("");
+                              });
+                            },
                             child: Icon(CupertinoIcons.clear_circled),
                           ),
                           contentPadding: EdgeInsets.symmetric(horizontal: 15),
