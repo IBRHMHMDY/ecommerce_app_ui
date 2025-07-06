@@ -1,4 +1,6 @@
 import 'package:ecommerce_app_ui/Models/category.dart';
+import 'package:ecommerce_app_ui/Models/product.dart';
+import 'package:ecommerce_app_ui/Screens/Category_items.dart';
 import 'package:ecommerce_app_ui/Utils/colors.dart';
 import 'package:ecommerce_app_ui/Widgets/header_section.dart';
 import 'package:flutter/material.dart';
@@ -16,8 +18,23 @@ class CategoriesSection extends StatelessWidget {
           child: Row(
             children: List.generate(
               demoCategory.length,
-              (index) => InkWell(
-                onTap: () {},
+              (index) => GestureDetector(
+                onTap: () {
+                  final filterItems = demoProduct
+                      .where(
+                        (item) => item.category.toLowerCase() == demoCategory[index].name.toLowerCase(),
+                      )
+                      .toList();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => CategoryItems(
+                        category: demoCategory[index].name,
+                        categoryItems: filterItems,
+                      ),
+                    ),
+                  );
+                },
                 child: Column(
                   children: [
                     Container(

@@ -4,8 +4,16 @@ import 'package:ecommerce_app_ui/Utils/colors.dart';
 import 'package:ecommerce_app_ui/Widgets/header_section.dart';
 import 'package:flutter/material.dart';
 
-class ProductsSection extends StatelessWidget {
+class ProductsSection extends StatefulWidget {
   const ProductsSection({super.key});
+
+  @override
+  State<ProductsSection> createState() => _ProductsSectionState();
+}
+
+class _ProductsSectionState extends State<ProductsSection> {
+  bool selectedFav = false;
+  int? selectedIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +26,7 @@ class ProductsSection extends StatelessWidget {
           child: Row(
             children: List.generate(
               demoProduct.length,
-              (index) => InkWell(
+              (index) => GestureDetector(
                 onTap: () {
                   Navigator.push(
                     context,
@@ -57,11 +65,11 @@ class ProductsSection extends StatelessWidget {
                             child: SizedBox(
                               height: 35,
                               width: 35,
-                              child: InkWell(
+                              child: GestureDetector(
                                 onTap: () {},
                                 child: Icon(
                                   Icons.favorite_border_outlined,
-                                  color: Colors.grey,
+                                  color: selectedFav ? Colors.red : Colors.grey,
                                   size: 24,
                                 ),
                               ),
