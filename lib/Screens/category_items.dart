@@ -20,6 +20,24 @@ class CategoryItems extends StatefulWidget {
 }
 
 class _CategoryItemsState extends State<CategoryItems> {
+  List<Product> filterResults = [];
+  TextEditingController controller = TextEditingController();
+  @override
+  void initState() {
+    filterResults = widget.categoryItems;
+    super.initState();
+  }
+
+  void _filterList(String keyword) {
+    setState(() {
+      filterResults = widget.categoryItems.where((product) {
+        final title = product.name.toString().toLowerCase();
+        final input = keyword.toLowerCase();
+        return title.contains(input);
+      }).toList();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -42,11 +60,15 @@ class _CategoryItemsState extends State<CategoryItems> {
                     child: SizedBox(
                       height: 45,
                       child: TextField(
+                        onChanged: _filterList,
                         decoration: InputDecoration(
                           hintText: "${widget.category}'s Fashions",
                           hintStyle: TextStyle(height: 2.5),
                           prefixIcon: Icon(CupertinoIcons.search),
-                          suffixIcon: Icon(CupertinoIcons.clear_circled),
+                          suffixIcon: GestureDetector(
+                            onTap: () => controller.clear(),
+                            child: Icon(CupertinoIcons.clear_circled),
+                          ),
                           contentPadding: EdgeInsets.symmetric(horizontal: 15),
                           filled: true,
                           border: OutlineInputBorder(
@@ -168,7 +190,7 @@ class _CategoryItemsState extends State<CategoryItems> {
                       ),
                     )
                   : GridView.builder(
-                      itemCount: widget.categoryItems.length,
+                      itemCount: filterResults.length,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         childAspectRatio: 0.7,
@@ -176,7 +198,7 @@ class _CategoryItemsState extends State<CategoryItems> {
                         crossAxisSpacing: 8,
                       ),
                       itemBuilder: (context, index) {
-                        final productCategory = widget.categoryItems[index];
+                        final productCategory = filterResults[index];
                         return Padding(
                           padding: const EdgeInsets.only(left: 15),
                           child: GestureDetector(
